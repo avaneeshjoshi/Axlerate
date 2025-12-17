@@ -1,28 +1,20 @@
-import os
 from .state import AgentState
 from langchain_groq import ChatGroq
-# Import the search function you built earlier
 from app.database.vector_store import search_db
 
-# 1. Retrieval Node: NOW FETCHING REAL DATA
 def retrieve(state: AgentState):
     print("---RETRIEVING FROM CHROMA DB---")
     question = state["question"]
-    retrieved_docs = search_db(question, k=2)
-    
-    # Use set() to remove exact duplicates, then convert back to list
-    unique_docs = list(set(retrieved_docs))
-    
-    context = unique_docs if unique_docs else ["No specific context found."]
-    return {"context": context}
+    # Now returns List[Document]
+    retrieved_docs = search_db(question, k=3)
+    return {"context": retrieved_docs}
 
-# 2. Drafting Node: Remains mostly the same, but uses real context
 def generate_proof(state: AgentState):
     print("---GENERATING PROOF (LLAMA 3.3)---")
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
     
-    # We format the list of docs into one string for the prompt
-    context_str = "\n".join(state["context"])
+    # Extract text from Document objects for the prompt
+    context_str = "\n\n".join([doc.page_content for doc in state["context"]])
     
     prompt = f"""
     You are an expert math tutor.
@@ -32,26 +24,30 @@ def generate_proof(state: AgentState):
     Task: Write a rigorous proof. If the context is insufficient, state what is missing.
     Format: Use LaTeX for all math.
     """
-    
     response = llm.invoke(prompt)
     return {"proof": response.content}
 
-# 3. Verification Node: The "Grader" (No changes needed)
 def verify_proof(state: AgentState):
     print("---VERIFYING PROOF---")
     llm = ChatGroq(model="llama-3.3-70b-versatile", temperature=0)
+    context_str = "\n\n".join([doc.page_content for doc in state["context"]])
     
     verification_prompt = f"""
-    Compare this Proof to the provided Context.
+    You are a math professor grading a student's proof.
     
-    Proof: {state['proof']}
-    Context: {state['context']}
+    CONTEXT PROVIDED TO STUDENT:
+    {context_str}
     
-    Does the proof rely ONLY on the definitions provided in the context? 
-    Respond with exactly one word: 'YES' or 'NO'.
+    STUDENT'S PROOF:
+    {state['proof']}
+    
+    CRITERIA:
+    1. Does the proof reach the correct mathematical conclusion?
+    2. Does the proof use definitions or theorems NOT found in the context? (Allow basic algebraic properties).
+    
+    If the proof is basically correct and logically sound based on the context, respond with 'YES'.
+    If the student invents a theorem or definition that contradicts or isn't in the context, respond with 'NO'.
+    
+    Respond with exactly one word: YES or NO.
     """
-    
-    response = llm.invoke(verification_prompt)
-    is_valid = "YES" in response.content.upper()
-    
-    return {"is_compliant": is_valid}
+    # ... rest of your code ...

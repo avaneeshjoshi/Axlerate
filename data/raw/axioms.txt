@@ -1,0 +1,80 @@
+Definition: Complex Numbers, $\mathbb{C}$
+A complex number is an ordered pair $(a, b)$, where $a, b \in \mathbb{R}$, written as $a + bi$.
+The set of all complex numbers is $\mathbb{C} = \{a + bi : a, b \in \mathbb{R}\}$.
+Addition and multiplication are defined by:
+$(a + bi) + (c + di) = (a + c) + (b + d)i$
+$(a + bi)(c + di) = (ac - bd) + (ad + bc)i$
+---
+Properties of Complex Arithmetic
+For all $\alpha, \beta, \lambda \in \mathbb{C}$:
+- Commutativity: $\alpha + \beta = \beta + \alpha$ and $\alpha\beta = \beta\alpha$
+- Associativity: $(\alpha + \beta) + \lambda = \alpha + (\beta + \lambda)$ and $(\alpha\beta)\lambda = \alpha(\beta\lambda)$
+- Identities: $\lambda + 0 = \lambda$ and $\lambda 1 = \lambda$
+- Additive Inverse: For every $\alpha \in \mathbb{C}$, there exists a unique $\beta \in \mathbb{C}$ such that $\alpha + \beta = 0$.
+- Multiplicative Inverse: For every $\alpha \neq 0$, there exists a unique $\beta \in \mathbb{C}$ such that $\alpha\beta = 1$.
+- Distributive Property: $\lambda(\alpha + \beta) = \lambda\alpha + \lambda\beta$
+---
+Notation: $\mathbb{F}$
+Throughout this book, $\mathbb{F}$ stands for either $\mathbb{R}$ or $\mathbb{C}$.
+---
+Definition: List and Length
+A list of length $n$ is an ordered collection of $n$ elements. Two lists are equal if and only if they have the same length and the same elements in the same order.
+---
+Definition: $\mathbb{F}^n$ and Coordinate
+$\mathbb{F}^n$ is the set of all lists of length $n$ of elements of $\mathbb{F}$:
+$\mathbb{F}^n = \{(x_1, \dots, x_n) : x_k \in \mathbb{F} \text{ for } k = 1, \dots, n\}$.
+$x_k$ is the $k$th coordinate of $(x_1, \dots, x_n)$.
+---
+Definition: Addition in $\mathbb{F}^n$
+$(x_1, \dots, x_n) + (y_1, \dots, y_n) = (x_1 + y_1, \dots, x_n + y_n)$.
+Addition in $\mathbb{F}^n$ is commutative: $x + y = y + x$.
+---
+Definition: Scalar Multiplication in $\mathbb{F}^n$
+$\lambda(x_1, \dots, x_n) = (\lambda x_1, \dots, \lambda x_n)$ for $\lambda \in \mathbb{F}$.
+---
+Definition: Vector Space
+A vector space is a set $V$ along with an addition and a scalar multiplication on $V$ such that:
+- Commutativity: $u + v = v + u$ for all $u, v \in V$.
+- Associativity: $(u + v) + w = u + (v + w)$ and $(ab)v = a(bv)$ for all $u, v, w \in V, a, b \in \mathbb{F}$.
+- Additive Identity: There exists $0 \in V$ such that $v + 0 = v$ for all $v \in V$.
+- Additive Inverse: For every $v \in V$, there exists $w \in V$ such that $v + w = 0$.
+- Multiplicative Identity: $1v = v$ for all $v \in V$.
+- Distributive Properties: $a(u + v) = au + av$ and $(a + b)v = av + bv$ for all $a, b \in \mathbb{F}, u, v \in V$.
+---
+Notation: $\mathbb{F}^S$
+If $S$ is a set, then $\mathbb{F}^S$ denotes the set of functions from $S$ to $\mathbb{F}$.
+For $f, g \in \mathbb{F}^S$, $(f + g)(x) = f(x) + g(x)$.
+For $\lambda \in \mathbb{F}, f \in \mathbb{F}^S$, $(\lambda f)(x) = \lambda f(x)$.
+---
+Theorem: Unique Identities and Inverses
+- A vector space has a unique additive identity.
+- Every element in a vector space has a unique additive inverse (denoted $-v$).
+---
+Basic Properties of Vector Spaces
+For $v \in V$ and $a \in \mathbb{F}$:
+- $0v = 0$
+- $a0 = 0$
+- $(-1)v = -v$
+---
+Definition: Subspace
+A subset $U$ of $V$ is called a subspace of $V$ if $U$ is also a vector space with the same additive identity, addition, and scalar multiplication as on $V$.
+---
+Conditions for a Subspace
+A subset $U$ of $V$ is a subspace of $V$ if and only if:
+1. Additive identity: $0 \in U$.
+2. Closed under addition: $u, w \in U \implies u + w \in U$.
+3. Closed under scalar multiplication: $a \in \mathbb{F}, u \in U \implies au \in U$.
+---
+Definition: Sum of Subspaces
+The sum of subspaces $V_1, \dots, V_m$, denoted $V_1 + \dots + V_m$, is the set of all possible sums of elements of $V_1, \dots, V_m$:
+$V_1 + \dots + V_m = \{v_1 + \dots + v_m : v_1 \in V_1, \dots, v_m \in V_m\}$.
+The sum is the smallest subspace containing $V_1, \dots, V_m$.
+---
+Definition: Direct Sum $\oplus$
+The sum $V_1 + \dots + V_m$ is a direct sum if each element can be written in only one way as a sum $v_1 + \dots + v_m$ where $v_k \in V_k$. It is denoted $V_1 \oplus \dots \oplus V_m$.
+---
+Condition for a Direct Sum
+$V_1 + \dots + V_m$ is a direct sum if and only if the only way to write $0$ as a sum $v_1 + \dots + v_m$ (with $v_k \in V_k$) is $v_1 = \dots = v_m = 0$.
+---
+Direct Sum of Two Subspaces
+Suppose $U$ and $W$ are subspaces of $V$. Then $U + W$ is a direct sum if and only if $U \cap W = \{0\}$.

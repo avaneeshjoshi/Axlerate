@@ -26,7 +26,8 @@ def add_to_db(text: str, metadata: dict):
     """Adds a single entry to the vector store."""
     vector_db.add_texts(texts=[text], metadatas=[metadata])
 
-def search_db(query: str, k=2):
-    """Returns the top k relevant strings from the DB."""
-    results = vector_db.similarity_search(query, k=k)
-    return [doc.page_content for doc in results]
+def search_db(query: str, k=3):
+    """Returns the top k relevant Document objects from the DB."""
+    # .similarity_search returns List[Document]
+    return vector_db.similarity_search(query, k=k)
+
