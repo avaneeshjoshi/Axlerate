@@ -50,4 +50,10 @@ def verify_proof(state: AgentState):
     
     Respond with exactly one word: YES or NO.
     """
-    # ... rest of your code ...
+    
+    response = llm.invoke(verification_prompt)
+    # This logic converts the LLM's "YES" or "NO" into a Boolean
+    is_valid = "YES" in response.content.upper()
+    
+    # IMPORTANT: You must return the dictionary to update the AgentState
+    return {"is_compliant": is_valid}
