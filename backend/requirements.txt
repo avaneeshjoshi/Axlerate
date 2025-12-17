@@ -7,3 +7,4 @@ chromadb
 pydantic
 python-dotenv
 networkx
+pyvis
