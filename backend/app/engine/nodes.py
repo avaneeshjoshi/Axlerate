@@ -2,7 +2,7 @@ import os
 from .state import AgentState
 from langchain_groq import ChatGroq
 # Import the search function you built earlier
-from ..database.vector_store import search_db 
+from app.database.vector_store import search_db
 
 # 1. Retrieval Node: NOW FETCHING REAL DATA
 def retrieve(state: AgentState):
