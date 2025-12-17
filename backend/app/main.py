@@ -1,5 +1,7 @@
 import os
+os.environ["TOKENIZERS_PARALLELISM"] = "false"
 from dotenv import load_dotenv
+
 # Make sure your import path matches your folder structure
 from app.engine.graph_builder import axlerate_app
 
