@@ -1,6 +1,6 @@
 from langgraph.graph import StateGraph, START, END
 from .state import AgentState
-from .nodes import retrieve, generate_proof
+from app.engine.nodes import retrieve, generate_proof, verify_proof
 
 # Initialize the graph with our state schema
 workflow = StateGraph(AgentState)

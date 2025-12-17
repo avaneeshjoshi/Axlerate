@@ -8,13 +8,12 @@ from app.database.vector_store import search_db
 def retrieve(state: AgentState):
     print("---RETRIEVING FROM CHROMA DB---")
     question = state["question"]
-    
-    # We search for the 2 most relevant definitions/theorems
     retrieved_docs = search_db(question, k=2)
     
-    # If the DB is empty or fails, we provide a fallback list so the app doesn't crash
-    context = retrieved_docs if retrieved_docs else ["No specific context found in database."]
+    # Use set() to remove exact duplicates, then convert back to list
+    unique_docs = list(set(retrieved_docs))
     
+    context = unique_docs if unique_docs else ["No specific context found."]
     return {"context": context}
 
 # 2. Drafting Node: Remains mostly the same, but uses real context

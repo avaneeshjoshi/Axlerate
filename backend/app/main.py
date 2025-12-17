@@ -1,7 +1,7 @@
 import os
 from dotenv import load_dotenv
 # Make sure your import path matches your folder structure
-from engine.graph_builder import axlerate_app
+from app.engine.graph_builder import axlerate_app
 
 load_dotenv()
 
