@@ -36,17 +36,29 @@ class QuestionResponse(BaseModel):
 @app.post("/api/question", response_model=QuestionResponse)
 async def handle_question(request: QuestionRequest):
     """Handle a question from the frontend and return the proof."""
-    inputs = {"question": request.question}
-    
-    # Use invoke to get the final state after the graph completes
-    # The graph will run through all nodes (retrieve -> draft -> verify -> potentially retry)
-    final_result = axlerate_app.invoke(inputs)
-    
-    # Extract the proof and compliance status from the final state
-    proof = final_result.get("proof", "")
-    is_compliant = final_result.get("is_compliant", False)
-    
-    return QuestionResponse(proof=proof, is_compliant=is_compliant)
+    try:
+        inputs = {"question": request.question}
+        
+        # Use invoke to get the final state after the graph completes
+        # The graph will run through all nodes (retrieve -> draft -> verify -> potentially retry)
+        final_result = axlerate_app.invoke(inputs)
+        
+        # Extract the proof and compliance status from the final state
+        proof = final_result.get("proof", "")
+        is_compliant = final_result.get("is_compliant", False)
+        
+        return QuestionResponse(proof=proof, is_compliant=is_compliant)
+    except Exception as e:
+        import traceback
+        error_details = traceback.format_exc()
+        print(f"Error processing question: {str(e)}")
+        print(f"Traceback: {error_details}")
+        
+        from fastapi import HTTPException
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error processing question: {str(e)}"
+        )
 
 @app.get("/")
 async def root():

@@ -25,13 +25,13 @@ export default function Navigation() {
               Workspace
             </Link>
             <Link 
-              href="#output" 
+              href="/concept-map" 
               className="hover:opacity-80 transition-opacity"
             >
               Concept Map
             </Link>
             <Link 
-              href="#system" 
+              href="/manifesto" 
               className="hover:opacity-80 transition-opacity"
             >
               Manifesto

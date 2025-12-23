@@ -1,7 +1,17 @@
+"use client"
+
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 const HeroSection = () => {
+  const router = useRouter();
+
+  const handleStartProving = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    router.push('/workspace');
+  };
+
   return (
     <section className="min-h-screen flex flex-col md:px-12 border-neutral-900 border-b pt-20 pr-6 pl-6 relative justify-center z-10">
       <div className="absolute inset-0 w-full h-full overflow-hidden z-0">
@@ -55,7 +65,10 @@ const HeroSection = () => {
           Every solution starts with the right definition. We construct complete, Axler-style proofs with correct logic and clean LaTeX, helping you build intuition for proof-based mathematics rather than just copying what to write.
           </div>
 
-          <button className="group flex items-center gap-4 cursor-pointer">
+          <button 
+            onClick={handleStartProving}
+            className="group flex items-center gap-4 cursor-pointer"
+          >
             <div className="w-12 h-12 border border-neutral-700 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300">
               <ArrowUpRight className="w-5 h-5 text-white group-hover:text-black transition-colors" />
             </div>

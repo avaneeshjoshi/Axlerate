@@ -25,3 +25,34 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), sans-serif;
 }
+
+/* Custom scrollbar for the textarea */
+textarea::-webkit-scrollbar {
+  width: 4px;
+}
+
+textarea::-webkit-scrollbar-thumb {
+  background: #262626; /* neutral-800 */
+  border-radius: 10px;
+}
+
+textarea::-webkit-scrollbar-thumb:hover {
+  background: #404040; /* neutral-700 */
+}
+
+/* Glow effect for textarea placeholder */
+textarea::placeholder {
+  transition: opacity 0.3s ease;
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+}
+
+/* Make KaTeX math formulas slightly sharper and glowing */
+.katex-display {
+  margin: 1.5em 0 !important;
+  color: white;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.katex {
+  font-size: 1.1em;
+}
