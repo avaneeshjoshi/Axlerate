@@ -34,7 +34,7 @@ export default function Home() {
         <HeroSection />
       </main>
 
-      {/* 2. THE BLACK SPLASH OVERLAY */}
+      {/* 2. SPLASH OVERLAY */}
       {shouldRenderOverlay && (
         <div 
           className={`fixed inset-0 z-[100] flex items-center justify-center bg-black transition-opacity duration-700 ease-in-out ${
