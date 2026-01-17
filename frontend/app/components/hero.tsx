@@ -3,7 +3,9 @@
 import React from "react";
 import { ArrowUpRight } from "lucide-react";
 import { useRouter } from "next/navigation";
-import ParticleSphereAnimation from "./ParticleSphere";
+import { motion } from "framer-motion";
+import AsciiBrain from "./AsciiBrain";
+import ParticleSphereAnimation from "./ParticleSphereAnimation";
 
 const HeroSection = () => {
   const router = useRouter();
@@ -13,27 +15,81 @@ const HeroSection = () => {
     router.push('/workspace');
   };
 
+  const text = "Prove the unknown.";
+  const words = text.split(" ");
+
+  // Define the animation variants
+  const container = {
+    hidden: { opacity: 0 },
+    visible: (i = 1) => ({
+      opacity: 1,
+      transition: { staggerChildren: 0.18, delayChildren: 0.04 * i },
+    }),
+  };
+
+  const child = {
+    visible: {
+      opacity: 1,
+      y: 0,
+      filter: "blur(0px)",
+      transition: {
+        type: "spring" as const,
+        damping: 14,
+        stiffness: 80,
+      },
+    },
+    hidden: {
+      opacity: 0,
+      y: 20,
+      filter: "blur(20px)",
+    },
+  };
+
   return (
-    <section className="min-h-screen flex flex-col md:px-12 border-neutral-900 border-b pt-20 pr-6 pl-6 relative justify-end z-10 bg-black pb-20">
-      <div className="max-w-7xl mx-auto w-full z-10">
+    <section className="min-h-screen flex flex-col md:px-12 border-neutral-900 border-b pt-20 pr-6 pl-6 relative justify-end z-10 bg-[#0a0a0a] pb-20">
+      <div className="max-w-7xl mx-auto w-full z-10 mt-32">
         {/* Particle Sphere Animation */}
-        <div className="mb-8 flex justify-center">
-          <ParticleSphereAnimation shouldStart={true} />
+        <div className="mb-0 flex justify-center">
+          <ParticleSphereAnimation />
         </div>
 
-        <div className="mb-12 flex justify-center">
+        <div className="mb-6 flex justify-center">
           <div className="rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.75)] px-6 py-3 inline-block">
             <p className="text-xs font-mono text-[#e4e4e7] uppercase tracking-widest">
-              Linear Algebra Done Right
+              AI FOR RESEARCH ACCELERATION
             </p>
           </div>
         </div>
 
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tighter leading-[0.9] text-white uppercase mb-16 font-sans text-center">
-          <span>Practice</span> <span className="text-neutral-600">Builds</span> <span>Intuition</span>
-        </h1>
+        {/* Updated H1 with Motion */}
+        <motion.h1 
+          className="text-5xl md:text-6xl lg:text-7xl font-semibold tracking-tighter leading-[0.9] text-white mb-8 font-sans text-center overflow-hidden"
+          variants={container}
+          initial="hidden"
+          animate="visible"
+        >
+          {words.map((word, index) => (
+            <motion.span 
+              variants={child} 
+              key={index} 
+              className="inline-block mr-[0.25em] last:mr-0"
+            >
+              {word}
+            </motion.span>
+          ))}
+        </motion.h1>
+        <p className="text-base md:text-xl text-neutral-400 text-center mb-16 max-w-3xl mx-auto">
+          Axlerate solves complex problems across your research workflow with zero hallucinations, mathematical certainty, and total collaborative control.
+        </p>
 
-        <div className="flex flex-col md:flex-row justify-between items-end border-t border-neutral-800 pt-8 w-full">
+        <div className="border-t border-neutral-800 w-full mb-16"></div>
+
+        {/* ASCII Brain */}
+        <div className="mb-6 flex justify-center">
+          <AsciiBrain />
+        </div>
+
+        <div className="flex flex-col md:flex-row justify-between items-end border-t border-neutral-800 pt-8 w-full mt-[60vh]">
           <div className="max-w-md text-sm text-neutral-400 leading-relaxed mb-8 md:mb-0">
           Every solution starts with the right definition. We construct complete, Axler-style proofs with correct logic and clean LaTeX, helping you build intuition for proof-based mathematics rather than just copying what to write.
           </div>

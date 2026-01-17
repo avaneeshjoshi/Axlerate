@@ -5,7 +5,6 @@ import React from 'react'
 // import { DotLottiePlayer } from '@dotlottie/react-player'
 import Navigation from "./components/navigation"
 import HeroSection from "./components/hero"
-import AsciiBrain from "./components/AsciiBrain"
 
 export default function Home() {
   // SPLASH SCREEN CODE - DISABLED BUT KEPT FOR FUTURE USE
@@ -29,16 +28,11 @@ export default function Home() {
   // }
 
   return (
-    <div className="relative min-h-screen bg-[#050505]">
+    <div className="relative min-h-screen bg-[#0a0a0a]">
       {/* 1. THE HERO SECTION */}
       <main>
         <Navigation />
         <HeroSection />
-        
-        {/* ASCII Brain Block Component */}
-        <section className="w-full border-t border-white/10 bg-black">
-          <AsciiBrain />
-        </section>
       </main>
 
       {/* 2. SPLASH OVERLAY - DISABLED BUT KEPT FOR FUTURE USE */}

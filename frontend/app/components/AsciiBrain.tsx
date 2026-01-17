@@ -61,7 +61,7 @@ const ASCII_TEXT = `
 
 export default function AsciiBrain() {
   return (
-    <div className="w-full h-[500px] bg-black">
+    <div className="w-full h-[500px] bg-[#0a0a0a]">
       <div style={{ position: "relative", overflow: "hidden", borderRadius: "0px", width: "100%", height: "100%" }}>
         {/* Blurred background layer */}
         <div
@@ -128,6 +128,7 @@ export default function AsciiBrain() {
         >
           {ASCII_TEXT}
         </div>
+
       </div>
     </div>
   );
