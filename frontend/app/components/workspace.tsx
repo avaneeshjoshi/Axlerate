@@ -3,10 +3,11 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { ArrowUpRight } from "lucide-react"
+import { ArrowUpRight, Network } from "lucide-react"
 import Image from "next/image"
 import { MathRenderer } from "./math-renderer"
 import Navigation from "./navigation"
+import GraphView from "./graph-view"
 
 interface Message {
   id: string
@@ -24,6 +25,7 @@ export default function Workspace() {
   const [input, setInput] = useState("")
   const [messages, setMessages] = useState<Message[]>([])
   const [isLoading, setIsLoading] = useState(false)
+  const [showGraphView, setShowGraphView] = useState(false)
   const textareaRef = useRef<HTMLTextAreaElement>(null)
 
   // Typewriter placeholder animation state
@@ -171,6 +173,11 @@ export default function Workspace() {
     }
   }
 
+  // If graph view is active, render it instead
+  if (showGraphView) {
+    return <GraphView onBack={() => setShowGraphView(false)} messages={messages} />
+  }
+
   return (
     <div className="min-h-screen text-white relative">
       {/* Background Video and Layers */}
@@ -187,9 +194,9 @@ export default function Workspace() {
             type="video/mp4"
           />
         </video>
-        
+
         <div className="absolute inset-y-0 left-0 w-3/4 z-10 pointer-events-none bg-gradient-to-r from-[#050505] via-[#050505]/95 to-transparent" />
-        
+
         <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 z-10" />
       </div>
 
@@ -206,6 +213,7 @@ export default function Workspace() {
 
       {/* Main Content */}
       <main className={`mx-auto max-w-7xl px-6 md:px-12 pb-12 ${messages.length === 0 ? 'flex flex-col items-center pt-[20vh] min-h-[calc(100vh-80px)]' : 'pt-20'}`}>
+
         {/* Messages */}
         {messages.length > 0 && (
           <div className="mb-8 space-y-6">
@@ -299,51 +307,77 @@ export default function Workspace() {
                 </div>
               </div>
             </form>
+
+            {/* Graph View Button - Empty State */}
+            <button
+              onClick={() => setShowGraphView(true)}
+              className="mt-4 flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/10 bg-[#0a0a0a] hover:bg-[#121212] hover:border-white/20 transition-all duration-300 group"
+            >
+              <Network className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors" />
+              <span className="text-sm text-neutral-400 group-hover:text-white transition-colors font-medium">
+                Switch to Graph View
+              </span>
+            </button>
           </div>
         )}
 
         {/* Input Area - when messages exist */}
         {messages.length > 0 && (
-          <form onSubmit={handleSubmit} className="relative">
-            <div className="rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.75)] transition-all focus-within:border-white/20">
-              <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
-                  setInput(e.target.value)
-                  adjustTextareaHeight()
-                }}
-                onFocus={() => {
-                  setIsFocused(true)
-                  resetTypewriter()
-                }}
-                onBlur={() => {
-                  setIsFocused(false)
-                  resetTypewriter()
-                }}
-                placeholder={isFocused ? "" : placeholder}
-                className="min-h-[80px] w-full resize-none border-0 bg-transparent px-6 py-4 text-sm text-white placeholder:text-white/30 focus:outline-none leading-relaxed transition-[height] duration-200 ease-in-out"
-                onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-                  if (e.key === "Enter" && !e.shiftKey) {
-                    e.preventDefault()
-                    handleSubmit(e)
-                  }
-                }}
-              />
-              <div className="flex items-center justify-between border-t border-white/10 px-6 py-4">
-                <p className="text-xs text-neutral-500 font-mono uppercase tracking-widest">Press Enter to send, Shift+Enter for new line</p>
-                <button
-                  type="submit"
-                  disabled={!input.trim() || isLoading}
-                  className="group flex items-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  <div className="w-12 h-12 border border-neutral-700 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300">
-                    <ArrowUpRight className="w-5 h-5 text-white group-hover:text-black transition-colors" />
-                  </div>
-                </button>
+          <>
+            <form onSubmit={handleSubmit} className="relative">
+              <div className="rounded-2xl border border-white/10 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.75)] transition-all focus-within:border-white/20">
+                <textarea
+                  ref={textareaRef}
+                  value={input}
+                  onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => {
+                    setInput(e.target.value)
+                    adjustTextareaHeight()
+                  }}
+                  onFocus={() => {
+                    setIsFocused(true)
+                    resetTypewriter()
+                  }}
+                  onBlur={() => {
+                    setIsFocused(false)
+                    resetTypewriter()
+                  }}
+                  placeholder={isFocused ? "" : placeholder}
+                  className="min-h-[80px] w-full resize-none border-0 bg-transparent px-6 py-4 text-sm text-white placeholder:text-white/30 focus:outline-none leading-relaxed transition-[height] duration-200 ease-in-out"
+                  onKeyDown={(e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+                    if (e.key === "Enter" && !e.shiftKey) {
+                      e.preventDefault()
+                      handleSubmit(e)
+                    }
+                  }}
+                />
+                <div className="flex items-center justify-between border-t border-white/10 px-6 py-4">
+                  <p className="text-xs text-neutral-500 font-mono uppercase tracking-widest">Press Enter to send, Shift+Enter for new line</p>
+                  <button
+                    type="submit"
+                    disabled={!input.trim() || isLoading}
+                    className="group flex items-center cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    <div className="w-12 h-12 border border-neutral-700 rounded-full flex items-center justify-center group-hover:bg-white group-hover:border-white transition-all duration-300">
+                      <ArrowUpRight className="w-5 h-5 text-white group-hover:text-black transition-colors" />
+                    </div>
+                  </button>
+                </div>
               </div>
+            </form>
+
+            {/* Graph View Button - With Messages State */}
+            <div className="flex justify-center mt-4">
+              <button
+                onClick={() => setShowGraphView(true)}
+                className="flex items-center gap-2 px-4 py-2.5 rounded-lg border border-white/10 bg-[#0a0a0a] hover:bg-[#121212] hover:border-white/20 transition-all duration-300 group"
+              >
+                <Network className="w-4 h-4 text-neutral-400 group-hover:text-white transition-colors" />
+                <span className="text-sm text-neutral-400 group-hover:text-white transition-colors font-medium">
+                  Switch to Graph View
+                </span>
+              </button>
             </div>
-          </form>
+          </>
         )}
       </main>
       </div>
