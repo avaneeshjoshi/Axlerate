@@ -94,7 +94,7 @@ const HeroSection = () => {
           Every solution starts with the right definition. We construct complete, Axler-style proofs with correct logic and clean LaTeX, helping you build intuition for proof-based mathematics rather than just copying what to write.
           </div>
 
-          <button 
+          <button
             onClick={handleStartProving}
             className="group flex items-center gap-4 cursor-pointer"
           >
