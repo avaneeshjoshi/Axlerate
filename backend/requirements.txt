@@ -2,6 +2,9 @@ fastapi
 uvicorn
 langchain
 langchain-openai
+langchain-groq
+langchain-chroma
+langchain-huggingface
 langgraph
 chromadb
 pydantic

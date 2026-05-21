@@ -1,0 +1,42 @@
+[
+  {
+    "id": "target_nat_add_zero",
+    "module": "ProofLab.Targets",
+    "sourceFile": "ProofLab/Targets.lean",
+    "declaration": "ProofLab.target_nat_add_zero",
+    "statement": "theorem target_nat_add_zero (n : Nat) : n + 0 = n := by",
+    "status": "unproved",
+    "difficulty": 1,
+    "tags": ["nat", "rewrite", "starter"]
+  },
+  {
+    "id": "target_nat_zero_add",
+    "module": "ProofLab.Targets",
+    "sourceFile": "ProofLab/Targets.lean",
+    "declaration": "ProofLab.target_nat_zero_add",
+    "statement": "theorem target_nat_zero_add (n : Nat) : 0 + n = n := by",
+    "status": "unproved",
+    "difficulty": 1,
+    "tags": ["nat", "rewrite", "starter"]
+  },
+  {
+    "id": "target_set_inter_comm",
+    "module": "ProofLab.Targets",
+    "sourceFile": "ProofLab/Targets.lean",
+    "declaration": "ProofLab.target_set_inter_comm",
+    "statement": "theorem target_set_inter_comm {alpha : Type} (A B : Set alpha) : Set.inter A B = Set.inter B A := by",
+    "status": "unproved",
+    "difficulty": 2,
+    "tags": ["set", "commutativity", "starter"]
+  },
+  {
+    "id": "target_set_union_comm",
+    "module": "ProofLab.Targets",
+    "sourceFile": "ProofLab/Targets.lean",
+    "declaration": "ProofLab.target_set_union_comm",
+    "statement": "theorem target_set_union_comm {alpha : Type} (A B : Set alpha) : Set.union A B = Set.union B A := by",
+    "status": "unproved",
+    "difficulty": 2,
+    "tags": ["set", "commutativity", "starter"]
+  }
+]
