@@ -149,3 +149,30 @@ Open `proof_lab/ProofLab/Targets.lean`. Each `sorry` is a slot the agent can rep
 | Verified Theorem Graph     | ⬜ not built yet                            |
 
 **Next milestone:** smallest possible end-to-end loop — agent reads `target_nat_add_zero`, drafts `by simp` or `by rfl`, Lean verifies, mark as solved.
+
+## RAG File Structure (For Memory/Retrieval Layer)
+
+Axlerate/
+  backend/
+    app/
+      database/
+        mathlib_index.py
+        mathlib_store.py
+      engine/
+        lean_runner.py
+        proof_agent.py
+      scripts/
+        index_mathlib.py
+  proof_lab/
+    .lake/
+    ProofLab/
+    targets.json
+
+## Along with LLM RAg we need:
+
+Lean verification
+error-driven retry
+tactic search
+helper lemma generation
+target scheduling
+proof attempt memory
