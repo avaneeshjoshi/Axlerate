@@ -6,6 +6,10 @@ Ask a question in plain English and Axlerate formalizes it into Lean, proves it 
 
 The Lean compiler is the only oracle. LLMs draft; Lean decides.
 
+![ProofLab demo — a machine-verified claim graph](docs/demo.gif)
+
+*ProofLab: the included `powerset monotone` example — an auto-decomposed theorem with three AI-proposed lemmas, all four claims Lean-verified. Clicking an edge shows the fact it carries; the inspector shows the formalized statement, the verified proof, and its dependencies.*
+
 ## Table of Contents
 
 - [What It Does](#what-it-does)
@@ -243,6 +247,8 @@ cd backend && ../.venv/bin/uvicorn app.main:app --port 8000
 cd frontend && npm run dev   # http://localhost:3000
 ```
 
+**See it working immediately:** open ProofLab and load the included **powerset monotone** project — a fully proved 4-node graph (the one in the demo GIF) that requires no LLM keys or proving time to explore.
+
 Legacy batch CLI (proves `targets.json` entries, writes proofs back into `Targets.lean`):
 
 ```bash
@@ -274,6 +280,10 @@ cd backend && ../.venv/bin/python -m app.engine.proof_agent [--target <id>]
 - Edge "referenced in the verified proof" flags are literal: tactics like `simp` can use a lemma without naming it, so *not referenced* ≠ *not needed*.
 - One REPL worker serializes compiles; heavy parallel proving queues at the compiler (still fast warm).
 - ProofLab storage is a JSON file — fine for local use, not multi-user.
+
+## Related Work
+
+Axlerate's pieces have research lineage, combined here into an interactive tool. The sketch-then-prove stage follows the **Draft, Sketch, and Prove** paradigm (Jiang et al., ICLR 2023) — informal sketch, formal skeleton, holes closed by automation. The claim-graph decomposition echoes **Lean blueprints** (the graph-of-lemmas methodology behind large formalizations like Tao's PFR project), with the difference that here the AI proposes the blueprint and the compiler checks composition live. The compiler-feedback retry loop is in the spirit of **LeanDojo/ReProver** and **DeepSeek-Prover**'s interaction with Lean, while the warm REPL builds on **leanprover-community/repl**, and per-hole goal-state proving resembles how **Paperproof** visualizes proof trees. The deliberately unsolved problem — checking that an LLM's formalization *faithfully captures* the informal statement, not merely that it elaborates — is the autoformalization-faithfulness gap that remains open across all of these systems.
 
 ## Roadmap
 
