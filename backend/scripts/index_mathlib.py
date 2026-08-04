@@ -8,10 +8,10 @@ REPO_ROOT = Path(__file__).resolve().parents[2]
 MATHLIB_ROOT = REPO_ROOT / "proof_lab" / ".lake" / "packages" / "mathlib" / "Mathlib"
 OUTPUT_PATH = REPO_ROOT / "axlerate_db" / "mathlib_index_preview.json"
 
-# Start tiny. Add more folders as the proof loop gets smarter.
+# All of Mathlib — upper-division coursework needs topology, analysis,
+# linear algebra, ring theory, ... which the original 4-dir slice missed.
 SLICE_DIRS = [
-    MATHLIB_ROOT / "Data" / "Nat",
-    MATHLIB_ROOT / "Data" / "Set",
+    MATHLIB_ROOT,
 ]
 
 DECL_RE = re.compile(
@@ -271,8 +271,9 @@ def main() -> None:
             all_records.extend(extract_declarations(lean_file))
 
     OUTPUT_PATH.parent.mkdir(parents=True, exist_ok=True)
+    # compact dump — full Mathlib is hundreds of thousands of declarations
     OUTPUT_PATH.write_text(
-        json.dumps(all_records, indent=2, ensure_ascii=False),
+        json.dumps(all_records, ensure_ascii=False),
         encoding="utf-8",
     )
 
