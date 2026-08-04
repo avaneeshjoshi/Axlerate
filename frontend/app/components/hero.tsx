@@ -23,7 +23,7 @@ const HeroSection = () => {
     hidden: { opacity: 0 },
     visible: (i = 1) => ({
       opacity: 1,
-      transition: { staggerChildren: 0.18, delayChildren: 0.04 * i },
+      transition: { staggerChildre1n: 0.18, delayChildren: 0.04 * i },
     }),
   };
 

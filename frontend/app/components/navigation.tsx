@@ -18,11 +18,17 @@ export default function Navigation() {
             </Link>
           </div>
           <div className="hidden md:flex gap-10 text-sm font-mono uppercase tracking-wider text-[#e4e4e7]">
-            <Link 
-              href="/workspace" 
+            <Link
+              href="/workspace"
               className="hover:opacity-80 transition-opacity"
             >
               Workspace
+            </Link>
+            <Link
+              href="/proof-lab"
+              className="hover:opacity-80 transition-opacity"
+            >
+              Proof Lab
             </Link>
             <Link 
               href="/concept-map" 

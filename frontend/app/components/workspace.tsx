@@ -3,7 +3,7 @@
 import type React from "react"
 
 import { useState, useRef, useEffect } from "react"
-import { ArrowUpRight, Network } from "lucide-react"
+import { ArrowUpRight, Network, ChevronDown, Download, Copy, Check, ExternalLink, Eye, EyeOff } from "lucide-react"
 import Image from "next/image"
 import { MathRenderer } from "./math-renderer"
 import Navigation from "./navigation"
@@ -13,6 +13,153 @@ interface Message {
   id: string
   role: "user" | "assistant"
   content: string
+  verification?: "lean-verified" | "ai-reviewed" | "unverified"
+  leanStatement?: string
+  leanProof?: string
+  latexDocument?: string
+}
+
+// Rough .tex -> markdown transform so the editor preview can reuse MathRenderer.
+function texToPreview(src: string): string {
+  let title = ""
+  const titleMatch = src.match(/\\title\{([\s\S]*?)\}/)
+  if (titleMatch) title = `## ${titleMatch[1]}\n\n`
+
+  let body = src
+  const begin = body.indexOf("\\begin{document}")
+  const end = body.indexOf("\\end{document}")
+  if (begin !== -1 && end !== -1) body = body.slice(begin + "\\begin{document}".length, end)
+
+  body = body
+    .replace(/\\maketitle/g, "")
+    .replace(/\\section\*?\{(.*?)\}/g, "## $1")
+    .replace(/\\subsection\*?\{(.*?)\}/g, "### $1")
+    .replace(/\\begin\{theorem\}/g, "\n**Theorem.** ")
+    .replace(/\\end\{theorem\}/g, "\n")
+    .replace(/\\begin\{proof\}/g, "\n**Proof.** ")
+    .replace(/\\end\{proof\}/g, " $\\blacksquare$\n")
+    .replace(/\\begin\{verbatim\}([\s\S]*?)\\end\{verbatim\}/g, (_m, c) => "\n```\n" + c.trim() + "\n```\n")
+    .replace(/\\\[([\s\S]*?)\\\]/g, (_m, c) => `$$${c}$$`)
+    .replace(/\\textbf\{(.*?)\}/g, "**$1**")
+    .replace(/\\emph\{(.*?)\}/g, "*$1*")
+    .replace(/\\texttt\{(.*?)\}/g, "`$1`")
+    .replace(/\\vspace\{.*?\}/g, "")
+    .replace(/\\noindent/g, "")
+    .replace(/\\begin\{small\}/g, "")
+    .replace(/\\end\{small\}/g, "")
+    .replace(/~/g, " ")
+
+  return title + body.trim()
+}
+
+function LatexPanel({ initialSource }: { initialSource: string }) {
+  const [source, setSource] = useState(initialSource)
+  const [showPreview, setShowPreview] = useState(false)
+  const [copied, setCopied] = useState(false)
+
+  const download = () => {
+    const blob = new Blob([source], { type: "application/x-tex" })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement("a")
+    a.href = url
+    a.download = "axlerate-proof.tex"
+    a.click()
+    URL.revokeObjectURL(url)
+  }
+
+  const copy = async () => {
+    await navigator.clipboard.writeText(source)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1500)
+  }
+
+  const openInOverleaf = () => {
+    const form = document.createElement("form")
+    form.method = "POST"
+    form.action = "https://www.overleaf.com/docs"
+    form.target = "_blank"
+    const input = document.createElement("input")
+    input.type = "hidden"
+    input.name = "snip"
+    input.value = source
+    form.appendChild(input)
+    document.body.appendChild(form)
+    form.submit()
+    document.body.removeChild(form)
+  }
+
+  const secondaryButton =
+    "inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-medium text-neutral-200 hover:bg-white/10 hover:border-white/25 hover:text-white active:scale-[0.97] transition-all duration-150"
+
+  return (
+    <details className="group mt-4 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden">
+      <summary className="flex cursor-pointer select-none items-center justify-between px-5 py-3.5 list-none [&::-webkit-details-marker]:hidden">
+        <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 transition-colors group-open:text-white group-hover:text-neutral-200">
+          LaTeX Export
+        </span>
+        <ChevronDown className="w-4 h-4 text-neutral-500 transition-transform duration-200 group-open:rotate-180" />
+      </summary>
+      <div className="border-t border-white/10">
+        <div className="flex flex-wrap items-center gap-2 px-5 py-4">
+          <button
+            onClick={download}
+            className="inline-flex items-center gap-2 rounded-full bg-white px-4 py-2 text-xs font-semibold text-black hover:bg-neutral-200 active:scale-[0.97] transition-all duration-150"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Download .tex
+          </button>
+          <button onClick={copy} className={secondaryButton}>
+            {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+            {copied ? "Copied" : "Copy"}
+          </button>
+          <button onClick={openInOverleaf} className={secondaryButton}>
+            <ExternalLink className="w-3.5 h-3.5" />
+            Open in Overleaf
+          </button>
+          <button
+            onClick={() => setShowPreview(!showPreview)}
+            className={`${secondaryButton} ${showPreview ? "border-emerald-400/40 bg-emerald-400/10 text-emerald-300 hover:bg-emerald-400/15 hover:border-emerald-400/50 hover:text-emerald-200" : ""}`}
+          >
+            {showPreview ? <EyeOff className="w-3.5 h-3.5" /> : <Eye className="w-3.5 h-3.5" />}
+            {showPreview ? "Hide preview" : "Preview"}
+          </button>
+        </div>
+        <div className="mx-5 mb-5 rounded-xl border border-white/10 bg-black/40 transition-colors focus-within:border-white/25">
+          <textarea
+            value={source}
+            onChange={(e) => setSource(e.target.value)}
+            spellCheck={false}
+            className="h-72 w-full resize-y rounded-xl bg-transparent px-4 py-3.5 font-mono text-[13px] leading-6 text-neutral-200 focus:outline-none"
+          />
+        </div>
+        {showPreview && (
+          <div className="mx-5 mb-5 rounded-xl border border-white/10 bg-black/40 px-5 py-4">
+            <p className="mb-4 text-[10px] font-mono uppercase tracking-widest text-neutral-500">Preview · approximate</p>
+            <MathRenderer content={texToPreview(source)} />
+          </div>
+        )}
+      </div>
+    </details>
+  )
+}
+
+function VerificationBadge({ verification }: { verification?: Message["verification"] }) {
+  if (!verification) return null
+  const styles = {
+    "lean-verified": "border-emerald-500/50 bg-emerald-500/10 text-emerald-400",
+    "ai-reviewed": "border-amber-500/50 bg-amber-500/10 text-amber-400",
+    "unverified": "border-neutral-700 bg-neutral-800/50 text-neutral-400",
+  }[verification]
+  const label = {
+    "lean-verified": "✓ Lean verified",
+    "ai-reviewed": "AI reviewed",
+    "unverified": "Unverified",
+  }[verification]
+  return (
+    <span className={`text-[10px] font-mono uppercase tracking-widest px-2 py-0.5 rounded-full border ${styles}`}>
+      {label}
+    </span>
+  )
 }
 
 const examples = [
@@ -155,6 +302,10 @@ export default function Workspace() {
         id: (Date.now() + 1).toString(),
         role: "assistant",
         content: data.proof || "Sorry, I couldn't generate a proof for that question.",
+        verification: data.verification,
+        leanStatement: data.lean_statement || undefined,
+        leanProof: data.lean_proof || undefined,
+        latexDocument: data.latex_document || undefined,
       }
       
       setMessages((prev) => [...prev, aiMessage])
@@ -220,14 +371,48 @@ export default function Workspace() {
             {messages.map((message) => (
               <div key={message.id} className={message.role === "user" ? "text-neutral-400" : ""}>
                 {message.role === "user" ? (
-                  <div className="rounded-lg border border-neutral-800 bg-[#0a0a0a] p-6">
-                    <p className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-3">QUESTION</p>
-                    <p className="text-sm text-neutral-400 leading-relaxed">{message.content}</p>
+                  <div className="rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-6">
+                    <p className="text-xs font-mono text-neutral-500 uppercase tracking-widest mb-3">Question</p>
+                    <p className="text-sm text-neutral-300 leading-relaxed">{message.content}</p>
                   </div>
                 ) : (
-                  <div className="rounded-lg border border-neutral-800 bg-gradient-to-br from-[#0a0a0a] to-[#050505] p-8">
-                    <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest mb-4">SOLUTION</p>
+                  <div className="rounded-2xl border border-white/10 bg-black/40 backdrop-blur-xl shadow-[0_18px_60px_rgba(0,0,0,0.55)] p-8">
+                    <div className="flex items-center gap-3 mb-5">
+                      <p className="text-xs font-mono text-emerald-400 uppercase tracking-widest">Solution</p>
+                      <VerificationBadge verification={message.verification} />
+                    </div>
                     <MathRenderer content={message.content} />
+                    {message.leanProof && message.leanStatement && (
+                      <details className="group mt-6 rounded-2xl border border-white/10 bg-white/[0.03] backdrop-blur-xl overflow-hidden">
+                        <summary className="flex cursor-pointer select-none items-center justify-between px-5 py-3.5 list-none [&::-webkit-details-marker]:hidden">
+                          <span className="flex items-center gap-2.5">
+                            <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                            <span className="text-xs font-mono uppercase tracking-widest text-neutral-400 transition-colors group-open:text-white group-hover:text-neutral-200">
+                              Lean 4 Proof
+                            </span>
+                          </span>
+                          <ChevronDown className="w-4 h-4 text-neutral-500 transition-transform duration-200 group-open:rotate-180" />
+                        </summary>
+                        <div className="border-t border-white/10 px-5 py-4">
+                          <pre className="overflow-x-auto font-mono text-[13px] leading-6">
+                            <span className="text-neutral-400">{message.leanStatement}</span>
+                            {"\n"}
+                            <span className="text-white">
+                              {message.leanProof
+                                .split("\n")
+                                .map((line) => `  ${line}`)
+                                .join("\n")}
+                            </span>
+                          </pre>
+                          <p className="mt-3 text-[10px] font-mono uppercase tracking-widest text-neutral-600">
+                            Verified by the Lean 4 compiler
+                          </p>
+                        </div>
+                      </details>
+                    )}
+                    {message.latexDocument && (
+                      <LatexPanel initialSource={message.latexDocument} />
+                    )}
                   </div>
                 )}
               </div>
