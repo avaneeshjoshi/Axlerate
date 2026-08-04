@@ -176,8 +176,8 @@
         "kind": "theorem",
         "intuition": "If every element of A is in B, then every possible subset we can make from A's elements is also a possible subset we could make from B's elements, since B contains all of A's elements plus potentially more.",
         "facts_used": [],
-        "x": 800,
-        "y": 140,
+        "x": 793.0,
+        "y": 208.0,
         "w": 260,
         "h": 0
       },
@@ -192,8 +192,8 @@
         "kind": "lemma",
         "intuition": "This unfolds the definition of powerset membership, needed to translate between 'x \u2208 \ud835\udcab A' and 'x \u2286 A'.",
         "facts_used": [],
-        "x": 620,
-        "y": 360,
+        "x": 386.0,
+        "y": 459.0,
         "w": 260,
         "h": 0
       },
@@ -210,8 +210,8 @@
         "facts_used": [
           "LE.le.subset"
         ],
-        "x": 820,
-        "y": 360,
+        "x": 813.0,
+        "y": 473.0,
         "w": 260,
         "h": 0
       },
@@ -226,8 +226,8 @@
         "kind": "lemma",
         "intuition": "This reduces proving a subset relation between collections of sets to a pointwise membership check, which is exactly how \ud835\udcab A \u2286 \ud835\udcab B will be established.",
         "facts_used": [],
-        "x": 1020,
-        "y": 360,
+        "x": 1020.0,
+        "y": 360.0,
         "w": 260,
         "h": 0
       }
