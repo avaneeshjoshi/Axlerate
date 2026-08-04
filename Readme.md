@@ -6,9 +6,7 @@ Ask a question in plain English and Axlerate formalizes it into Lean, proves it 
 
 The Lean compiler is the only oracle. LLMs draft; Lean decides.
 
-![ProofLab demo — a machine-verified claim graph](docs/demo.gif)
-
-*ProofLab: the included `powerset monotone` example — an auto-decomposed theorem with three AI-proposed lemmas, all four claims Lean-verified. Clicking an edge shows the fact it carries; the inspector shows the formalized statement, the verified proof, and its dependencies.*
+<!-- demo recording goes here: paste theorem → graph generates → nodes prove green → export .lean -->
 
 ## Table of Contents
 
