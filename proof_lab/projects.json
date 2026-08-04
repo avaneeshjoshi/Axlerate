@@ -1,0 +1,256 @@
+[
+  {
+    "id": "36677ae2",
+    "name": "Linear Algebra Test",
+    "nodes": [
+      {
+        "id": "2d00e1b9",
+        "statement_en": "A subset of a set in a power set is an element of that power set",
+        "lean_statement": "theorem node_2d00e1b9 {\u03b1 : Type*} {x s : Set \u03b1} (h : x \u2286 s) : x \u2208 \ud835\udcab s := by",
+        "lean_proof": "aesop",
+        "status": "proved",
+        "error": "",
+        "x": 118.11328125,
+        "y": 235.76171875
+      },
+      {
+        "id": "841ae5b6",
+        "statement_en": "New claim \u2014 click to edit",
+        "lean_statement": "",
+        "lean_proof": "",
+        "status": "idea",
+        "error": "",
+        "x": 896.87109375,
+        "y": 405.2421875
+      },
+      {
+        "id": "f8727f30",
+        "statement_en": "For any type \u03b1 and any set s of elements of \u03b1, the power set \ud835\udcab s equals the set of all subsets t of s, i.e. \ud835\udcab s = {t | t \u2286 s}.",
+        "lean_statement": "theorem node_f8727f30 {\u03b1 : Type*} (s : Set \u03b1) : \ud835\udcab s = {t : Set \u03b1 | t \u2286 s} := by",
+        "lean_proof": "rfl",
+        "status": "proved",
+        "error": "",
+        "x": 107.0,
+        "y": 519.9921875
+      },
+      {
+        "id": "eaf92b47",
+        "statement_en": "For any type \u03b1, any predicate p on sets of elements of \u03b1, and any set t, t belongs to the set {u | p u} if and only if p t holds.",
+        "lean_statement": "theorem node_eaf92b47 {\u03b1 : Type*} (p : Set \u03b1 \u2192 Prop) (t : Set \u03b1) : t \u2208 {u : Set \u03b1 | p u} \u2194 p t := by",
+        "lean_proof": "",
+        "status": "formalized",
+        "error": "",
+        "x": 521.76953125,
+        "y": 637.26953125,
+        "kind": "conjecture"
+      },
+      {
+        "id": "94a184f1",
+        "statement_en": "If two sets A and B are equal, and an element x belongs to B, then x belongs to A.",
+        "lean_statement": "theorem node_94a184f1 {\u03b1 : Type*} (A B : Set \u03b1) (hAB : A = B) (x : \u03b1) (hx : x \u2208 B) : x \u2208 A := by",
+        "lean_proof": "",
+        "status": "formalized",
+        "error": "",
+        "x": 520.78125,
+        "y": 228.25
+      }
+    ],
+    "edges": [
+      {
+        "source": "f8727f30",
+        "target": "2d00e1b9"
+      },
+      {
+        "source": "eaf92b47",
+        "target": "2d00e1b9"
+      },
+      {
+        "source": "94a184f1",
+        "target": "2d00e1b9"
+      },
+      {
+        "source": "94a184f1",
+        "target": "841ae5b6"
+      }
+    ]
+  },
+  {
+    "id": "ed2fc6fd",
+    "name": "Test 1",
+    "nodes": [
+      {
+        "id": "d5f96fd7",
+        "statement_en": "if set \\(A\\) is a subset of set \\(B\\), then the power set of \\(A\\) is a subset of the power set of \\(B\\)",
+        "lean_statement": "theorem node_d5f96fd7 {\u03b1 : Type*} (A B : Set \u03b1) (h : A \u2286 B) : \ud835\udcab A \u2286 \ud835\udcab B := by",
+        "lean_proof": "aesop",
+        "status": "proved",
+        "error": "",
+        "model": "sonnet",
+        "kind": "proposition",
+        "intuition": "If every element of A is also in B, then every possible subset you can make from A's elements is also a possible subset you can make from B's elements, since all of A's elements are available in B.",
+        "facts_used": [],
+        "x": 453.76953125,
+        "y": 167.8984375,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "9f349f37",
+        "statement_en": "For any set S and any subset X, X belongs to the power set of S if and only if X \u2286 S.",
+        "lean_statement": "theorem node_9f349f37 (\u03b1 : Type*) (S X : Set \u03b1) : X \u2208 \ud835\udcab S \u2194 X \u2286 S := by",
+        "lean_proof": "",
+        "status": "formalized",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "This unfolds the definition of powerset membership, turning power-set containment into an ordinary subset statement.",
+        "facts_used": [],
+        "x": 150.4609375,
+        "y": 457.91015625,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "4dc65bb2",
+        "statement_en": "If X \u2286 A and A \u2286 B, then X \u2286 B (subset relation is transitive).",
+        "lean_statement": "theorem node_4dc65bb2 (\u03b1 : Type*) (A B X : Set \u03b1) (h1 : X \u2286 A) (h2 : A \u2286 B) : X \u2286 B := by",
+        "lean_proof": "",
+        "status": "formalized",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "Transitivity lets us chain the subset from an arbitrary element of \ud835\udcab A through A \u2286 B to conclude it lies in B.",
+        "facts_used": [],
+        "x": 589.54296875,
+        "y": 550.36328125,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "15472b63",
+        "statement_en": "To prove that one set of sets S1 is a subset of another set of sets S2, it suffices to show that every element of S1 is an element of S2.",
+        "lean_statement": "theorem node_15472b63 (\u03b2 : Type*) (S1 S2 : Set \u03b2) (h : \u2200 x, x \u2208 S1 \u2192 x \u2208 S2) : S1 \u2286 S2 := by",
+        "lean_proof": "",
+        "status": "formalized",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "This reduces the goal \ud835\udcab A \u2286 \ud835\udcab B to a pointwise membership statement about arbitrary subsets X of A.",
+        "facts_used": [],
+        "x": 908.33984375,
+        "y": 166.8046875,
+        "w": 260,
+        "h": 0
+      }
+    ],
+    "edges": [
+      {
+        "source": "9f349f37",
+        "target": "d5f96fd7",
+        "kind": "uses"
+      },
+      {
+        "source": "4dc65bb2",
+        "target": "d5f96fd7",
+        "kind": "uses"
+      },
+      {
+        "source": "15472b63",
+        "target": "d5f96fd7",
+        "kind": "uses"
+      }
+    ]
+  },
+  {
+    "id": "57c8afd2",
+    "name": "powerset monotone",
+    "nodes": [
+      {
+        "id": "dc8152e0",
+        "statement_en": "If A is a subset of B, then the powerset of A is a subset of the powerset of B.",
+        "lean_statement": "theorem node_dc8152e0 {\u03b1 : Type*} {A B : Set \u03b1} (h : A \u2286 B) : \ud835\udcab A \u2286 \ud835\udcab B := by",
+        "lean_proof": "aesop",
+        "status": "proved",
+        "error": "",
+        "model": "sonnet",
+        "kind": "theorem",
+        "intuition": "If every element of A is in B, then every possible subset we can make from A's elements is also a possible subset we could make from B's elements, since B contains all of A's elements plus potentially more.",
+        "facts_used": [],
+        "x": 800,
+        "y": 140,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "72976f28",
+        "statement_en": "For any sets x and s in a type \u03b1, x is an element of the powerset of s if and only if x is a subset of s.",
+        "lean_statement": "theorem node_72976f28 {\u03b1 : Type*} (x s : Set \u03b1) : x \u2208 \ud835\udcab s \u2194 x \u2286 s := by",
+        "lean_proof": "rfl",
+        "status": "proved",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "This unfolds the definition of powerset membership, needed to translate between 'x \u2208 \ud835\udcab A' and 'x \u2286 A'.",
+        "facts_used": [],
+        "x": 620,
+        "y": 360,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "2fd1c211",
+        "statement_en": "For any sets x, A, B in a type \u03b1, if x is a subset of A and A is a subset of B, then x is a subset of B.",
+        "lean_statement": "theorem node_2fd1c211 {\u03b1 : Type*} (x A B : Set \u03b1) (h1 : x \u2286 A) (h2 : A \u2286 B) : x \u2286 B := by",
+        "lean_proof": "exact LE.le.subset fun \u2983a\u2984 a_1 => h2 (h1 a_1)",
+        "status": "proved",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "This is subset transitivity, used to chain x \u2286 A with the hypothesis A \u2286 B to get x \u2286 B.",
+        "facts_used": [
+          "LE.le.subset"
+        ],
+        "x": 820,
+        "y": 360,
+        "w": 260,
+        "h": 0
+      },
+      {
+        "id": "dff16ae0",
+        "statement_en": "For any sets S and T of subsets of \u03b1, if every element of S is also an element of T, then S is a subset of T.",
+        "lean_statement": "theorem node_dff16ae0 {\u03b1 : Type*} (S T : Set (Set \u03b1)) (h : \u2200 x, x \u2208 S \u2192 x \u2208 T) : S \u2286 T := by",
+        "lean_proof": "aesop",
+        "status": "proved",
+        "error": "",
+        "model": "sonnet",
+        "kind": "lemma",
+        "intuition": "This reduces proving a subset relation between collections of sets to a pointwise membership check, which is exactly how \ud835\udcab A \u2286 \ud835\udcab B will be established.",
+        "facts_used": [],
+        "x": 1020,
+        "y": 360,
+        "w": 260,
+        "h": 0
+      }
+    ],
+    "edges": [
+      {
+        "source": "72976f28",
+        "target": "dc8152e0",
+        "kind": "uses",
+        "used": false
+      },
+      {
+        "source": "2fd1c211",
+        "target": "dc8152e0",
+        "kind": "uses",
+        "used": false
+      },
+      {
+        "source": "dff16ae0",
+        "target": "dc8152e0",
+        "kind": "uses",
+        "used": false
+      }
+    ]
+  }
+]
