@@ -1,1 +1,13 @@
 .env
+.venv/
+venv/
+__pycache__/
+proof_lab/.lake/
+proof_lab/.axlerate_scratch/
+.DS_Store
+
+# Lean REPL build (clone of leanprover-community/repl)
+vendor/repl/
+
+# Vector store + Mathlib index artifacts (rebuild via backend/scripts)
+axlerate_db/
